@@ -1,16 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Incomes - Expenses:Admission</title>
-</head>
-<body>
-    <h1>Esto seria la lista de Ingresos y Gastos</h1>
-    <p>Accounting simulation</p>
+{% extends "base.html" %}
 
-    <a href="/">Return</a>
+{% block pageBase %}
+    <section>
+        <h1>Esto seria la lista de Ingresos y Gastos</h1>
+        <p>Accounting simulation</p>
 
-</body>
-</html>
+        <form>
+                <label for="fecha">Date:</label>
+                <input type="date" name="fecha" placeholder="Introduce a Date" value="">
+                <br>
+                <label for="text">Text:</label>
+                <input type="text" name="concept" placeholder="Introduce a concept" value="">
+                <br>
+                <label for="number">Quantity:</label>
+                <input type="number" name="quantity" placeholder="Introduce a quantity" value="1">
+                <br>
+                <button onclik="alert('Already saved, thank you')">Save</button>
+        </form>
+        <br>
+        <a href="/">Return</a>
+{% endblock %}

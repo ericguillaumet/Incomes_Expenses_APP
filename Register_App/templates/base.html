@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incomes - Expenses:{{ pageTitle }} {#Esto es un comentario de Jinja // Hueco para recibir variables#} </title>
+    <!--Comentario HTML -->
+    
+</head>
+
+<style>
+    table, th, td {
+      border:1px solid black;
+    }
+</style>
+<body>
+    <header>
+        <div>
+            <a href="/">Main</a> |
+            <a href="/new">New</a> |
+            <a href="/update">Edit</a> |
+            <a href="/delete">Delete</a> |
+            {#Si quiero que los anchor estén uno debajo del otro utilizo "br"#}
+        </div>
+        <h1>Flask APP from Bootcamp Cero XIII</h1>
+    </header>
+    
+    <section>
+        {% block pageBase %} {#Esto es un hueco para recibir plantilla HTML#}
+        {% endblock %}
+    </section>
+
+    <footer>
+        &copy; 2022 - All rights reserved - eguillaumet@email.com
+    </footer>
+</body>
+</html>

@@ -1,26 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Incomes - Expenses:lists</title>
-</head>
+{% extends "base.html" %}
 
-<style>
-    table, th, td {
-      border:1px solid black;
-    }
-</style>
-
-<body>
-    <header>
-        <h1>Flask APP from Bootcamp Cero XIII</h1>
-    </header>
-
-    <section>
+{% block pageBase %}
         <h1>Esto seria la lista de Ingresos y Gastos</h1>
         <p>Accounting simulation</p>
+        <p>{{list}}</p>
             <table>
                 <thead>
                     <tr>
@@ -30,31 +13,18 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for item in list %}{#Se repitrá toda la estructura dentro#}
+
                     <tr>
-                        <td>18/12/2022</td>
-                        <td>Regalo de Reyes</td>
-                        <td>-275.50€</td>
+                        <td>{{item.fecha}}</td>
+                        <td>{{item.concepto}}</td>
+                        <td>{{item.cantidad}}€</td>
                     </tr>
-                    <tr>
-                        <td>19/12/2022</td>
-                        <td>Cobro de Trabajo</td>
-                        <td>-1200€</td>
-                    </tr>
-                    <tr>
-                        <td>20/12/2022</td>
-                        <td>Ropa de Navidad</td>
-                        <td>-50.30€</td>
-                    </tr>
+                    {% endfor %}
+
                 </tbody>
         
             </table>
         
             <a href="/new">New</a>
-    </section>
-
-    <footer>
-        &copy; 2022 - All rights reserved - eguillaumet@protonmail.com
-    </footer>
-
-</body>
-</html>
+{% endblock %}

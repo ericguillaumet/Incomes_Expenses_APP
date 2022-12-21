@@ -1,0 +1,19 @@
+{% block formBase %}
+
+<h1>Esto seria {{typeAction}} de Ingresos y Gastos</h1>
+<p>Accounting simulation</p>
+
+<form>
+        <label for="fecha">Date:</label>
+        <input type="date" name="fecha" placeholder="Introduce a Date" value="">
+        <br>
+        <label for="text">Text:</label>
+        <input type="text" name="concept" placeholder="Introduce a concept" value="">
+        <br>
+        <label for="number">Quantity:</label>
+        <input type="number" name="quantity" placeholder="Introduce a quantity" value="1">
+        <br>
+        <button onclik="alert('Already saved, thank you')">{{buttonAction}}</button>
+</form>
+
+{% endblock %}
