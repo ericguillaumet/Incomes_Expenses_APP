@@ -1,10 +1,11 @@
 from Register_App import app
-from flask import render_template
+from flask import render_template, request, redirect
+from datetime import date
 import csv
 
 @app.route("/")
 def index():
-    file = open("data/movements.txt", "r") #Llama al archivo
+    file = open("data/movements.csv", "r") #Llama al archivo
     csvReader = csv.reader(file, delimiter=",",quotechar='"') #Accede a cada registro del archivo y lo formatea
     data = [] #Creo una lista de datos vacía para cargar los registros del archivo
 
@@ -17,7 +18,22 @@ def index():
 
 @app.route("/new", methods=["GET","POST"])
 def create():
-    return render_template("new.html", pageTitle="Admission", typeAction="admission", typeButton="Save")
+    if request.method == "GET": #Esto puede ser POST o GET
+        return render_template("new.html", pageTitle="Admission", typeAction="admission", typeButton="Save")
+    else: #acceder al archivo y configurarlo para cargar un nuevo registro
+        myfile = open('data/movements.csv', 'a', newline='')
+        #llamamos al metodo writer de escritura y cargamos el formato para csv
+        read = csv.writer(myfile, delimiter=',',quotechar='"')
+
+        #realizamos el control de fecha
+
+
+        #registramos los datos recibidos desde el formulario con request.form y lo añadimos con el método writerrow
+        read.writerow([request.form['date'], request.form['concept'],request.form['quantity']])
+
+        myfile.close()
+
+    return redirect('/') #Para que nos redirija a la pantalla principal
 
 @app.route("/update")
 def edit():
