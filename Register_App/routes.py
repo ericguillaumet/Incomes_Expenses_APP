@@ -1,6 +1,6 @@
 from Register_App import app
 from flask import render_template, request, redirect
-from datetime import date
+from datetime import datetime, date
 import csv
 
 @app.route("/")
@@ -26,7 +26,12 @@ def create():
         read = csv.writer(myfile, delimiter=',',quotechar='"')
 
         #realizamos el control de fecha
+        date_format = datetime.datetime.strptime(request.form['date'], "%Y-%m-%d") #date_format es la variable de fecha formateada
 
+        if date_format.date <= date.today():
+            print("fecha correcta")
+        else:
+            print("fecha incorrecta")
 
         #registramos los datos recibidos desde el formulario con request.form y lo añadimos con el método writerrow
         read.writerow([request.form['date'], request.form['concept'],request.form['quantity']])
