@@ -1,19 +1,21 @@
-{% block formBase %}
+{% extends "base.html" %}
+{% block pageBase %} 
 
-<h1>Esto seria {{typeAction}} de Ingresos y Gastos</h1>
+<h1>This is the {{typeAction}} of Incomes and Expenses</h1>
 <p>Accounting simulation</p>
 
-<form>
+<form action="/new" method="post"> <!--El action es para enviar los datos, en este caso a home-->
         <label for="fecha">Date:</label>
-        <input type="date" name="fecha" placeholder="Introduce a Date" value="">
+        <input type="date" name="date">
         <br>
         <label for="text">Text:</label>
-        <input type="text" name="concept" placeholder="Introduce a concept" value="">
+        <input type="text" name="concept" placeholder="Introduce a concept" required>
         <br>
         <label for="number">Quantity:</label>
-        <input type="number" name="quantity" placeholder="Introduce a quantity" value="1">
+        <input type="number" name="quantity" placeholder="Introduce a quantity" required>
         <br>
-        <button onclik="alert('Already saved, thank you')">{{buttonAction}}</button>
+        <button type="submit">{{typeButton}}</button>
 </form>
-
+<br>
+<a href="/">Return</a>
 {% endblock %}

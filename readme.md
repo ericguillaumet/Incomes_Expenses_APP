@@ -18,6 +18,11 @@ The used libraries: https://flask.palletsprojects.com/en/2.2.x/
     - iOS: ```export FLASK_APP=hello.py```
     - Windows: ```set FLASK_APP=hello.py```
 
+## Another option would be to create the hidden directory .env and add the following lines:
+
+- FLASK_APP=main.py
+- FLASK_DEBUG=True
+
 ## Command to execute the server:
 
 ```
