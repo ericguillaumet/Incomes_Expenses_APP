@@ -1,4 +1,22 @@
 {% extends "base.html" %}
 {% block pageBase %}
-<h1>This is the view that eliminates the register</h1>
+
+<table>
+    <tr>    
+        <td>Date</td>
+        <td>{{registers[1]}}</td> 
+    </tr>
+    <tr>
+        <td>Concept:</td>
+        <td>{{registers[2]}}</td>
+    </tr>
+    
+    <tr>
+        <td>Quantity:</td>
+        <td>{{registers[3]}}</td>
+    </tr>
+</table>
+<form action="/delete/{{registers[0]}}" method="post">
+    <button type="submit">Delete Register</button>
+</form>
 {% endblock %}
