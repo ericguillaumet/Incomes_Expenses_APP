@@ -31,8 +31,26 @@ def create():
         if error:                                                                                               #Mensaje de error
             return render_template("new.html", pageTitle="Admission", typeAction="Admission", typeButton="Save", msgerror = error, dataForm=request.form) 
         else:
+            myfile = open('data/movements.csv', 'a', newline='')
+            read = csv.writer(myfile, delimiter=',',quotechar='"')
+            #crear ID
+            myfile = open('data/last_id.csv', 'r')
+
+            register = myfile.read()
+
+            if register == "":
+                new_id = 1
+            
+            else:
+                new_id = int(register) + 1
+            myfile.close()
+
+            saving_file = open('data/last_id.csv', 'w', newline='')
+            saving_file.write(str(new_id))
+
+            saving_file.close()
             #registramos los datos recibidos desde el formulario con request.form y lo añadimos con el método writerrow
-            read.writerow([request.form['date'], request.form['concept'],request.form['quantity']])
+            read.writerow([new_id, request.form['date'], request.form['concept'],request.form['quantity']])
 
         myfile.close()
 
