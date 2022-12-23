@@ -6,16 +6,26 @@
 
 <form action="/new" method="post"> <!--El action es para enviar los datos, en este caso a home-->
         <label for="fecha">Date:</label>
-        <input type="date" name="date">
+        <input type="date" name="date" value="{{dataForm.date}}" required>
         <br>
         <label for="text">Text:</label>
-        <input type="text" name="concept" placeholder="Introduce a concept" required>
+        <input type="text" name="concept" placeholder="Introduce a concept" value="{{dataForm.concept}}">
         <br>
         <label for="number">Quantity:</label>
-        <input type="number" name="quantity" placeholder="Introduce a quantity" step="0.01" required> <!--step para poder agregar decimales después de la coma-->
+        <input type="number" name="quantity" placeholder="Introduce a quantity" step="0.01" value="{{dataForm.quantity}}"> <!--step para poder agregar decimales después de la coma-->
         <br>
         <button type="submit">{{typeButton}}</button>
 </form>
 <br>
 <a href="/">Return</a>
+
+<article>
+        <ul>
+                {% for item in msgerror %}
+                <li>{{item}}</li>
+                {% endfor %}
+        </ul>
+
+</article>
+
 {% endblock %}
