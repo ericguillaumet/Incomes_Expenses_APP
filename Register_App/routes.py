@@ -18,7 +18,7 @@ def index():
 def create():
 
     if request.method == "GET": #Esto puede ser POST o GET
-        return render_template("new.html", pageTitle="Admission", typeAction="Admission", typeButton="Save", dataForm={}) #dataForm vacío porque es un diccionario
+        return render_template("new.html", pageTitle="Admission", typeAction="Admission", typeButton="Save", dataForm={}, urlForm="/new") #dataForm vacío porque es un diccionario
     else: #acceder al archivo y configurarlo para cargar un nuevo registro
         myfile = open(MOVEMENTS_FILE, 'a', newline='') #La 'a' es de actualización
         #llamamos al metodo writer de escritura y cargamos el formato para csv
@@ -43,7 +43,7 @@ def edit(id):
 
         register = select_by(id)
 
-        return render_template("update.html", pageTitle="Edit", typeAction="Modification", typeButton="Edit", dataForm=register)
+        return render_template("update.html", pageTitle="Edit", typeAction="Modification", typeButton="Edit", dataForm=register, urlForm="/update/" + str(id))
     
     else:
 
@@ -56,6 +56,8 @@ def edit(id):
             update_by(id, [request.form['date'],
                     request.form['concept'],
                     request.form['quantity']])
+
+    return redirect('/')
     
     #return f"This is the ID ={id} of the modify register"
 

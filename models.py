@@ -91,4 +91,20 @@ def insert(register_form):
     myfile.close()
 
 def update_by(id, modified_register):
-    pass
+    old_file = open(MOVEMENTS_FILE, 'r') #acceder al csv de registros
+    file = open(MOVEMENTS_NEW_FILE, 'w', newline= "") #acceder a un archivo auxiliar
+
+    csvReader = csv.reader(old_file, delimiter=',', quotechar='"')
+    csvWriter = csv.writer(file, delimiter=',', quotechar='"')
+
+    for register in csvReader:
+        if register[0] != str(id): #mientras el id sea distinto del proporcionado, para eliminar escribimos encima de "file"
+            csvWriter.writerow(register)
+        else: #encontramos el registro con el id dado
+            csvWriter.writerow([str(id)] + modified_register)
+
+    old_file.close()
+    file.close()
+
+    os.remove(MOVEMENTS_FILE) #función remove que recibe la ruta del archivo a eliminar
+    os.rename(MOVEMENTS_NEW_FILE, MOVEMENTS_FILE) #función para renombrar que recibe los parámetros de archivo a renombrar y nombre nuevo
