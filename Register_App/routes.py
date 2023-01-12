@@ -2,10 +2,12 @@ from Register_App import app
 from flask import render_template, request, redirect
 from datetime import date
 import csv
+from config import *
+import os #módulo para renombrar y eliminar archivos
 
 @app.route("/")
 def index():
-    file = open("data/movements.csv", "r") #Llama al archivo
+    file = open(MOVEMENTS_FILE, "r") #Llama al archivo
     csvReader = csv.reader(file, delimiter=",",quotechar='"') #Accede a cada registro del archivo y lo formatea
     data = [] #Creo una lista de datos vacía para cargar los registros del archivo
 
@@ -23,7 +25,7 @@ def create():
     if request.method == "GET": #Esto puede ser POST o GET
         return render_template("new.html", pageTitle="Admission", typeAction="Admission", typeButton="Save", dataForm={}) #dataForm vacío porque es un diccionario
     else: #acceder al archivo y configurarlo para cargar un nuevo registro
-        myfile = open('data/movements.csv', 'a', newline='') #La 'a' es de actualización
+        myfile = open(MOVEMENTS_FILE, 'a', newline='') #La 'a' es de actualización
         #llamamos al metodo writer de escritura y cargamos el formato para csv
         read = csv.writer(myfile, delimiter=',',quotechar='"')
 
@@ -33,10 +35,10 @@ def create():
         if error:                                                                                               #Mensaje de error
             return render_template("new.html", pageTitle="Admission", typeAction="Admission", typeButton="Save", msgerror = error, dataForm=request.form) 
         else:
-            myfile = open('data/movements.csv', 'a', newline='')
-            read = csv.writer(myfile, delimiter=',',quotechar='"')
+            myfile = open(MOVEMENTS_FILE, 'a', newline='')
+            read = csv.writer(myfile, delimiter=',', quotechar='"')
             #crear ID
-            myfile = open('data/last_id.csv', 'r')
+            myfile = open(LAST_ID_FILE, 'r')
 
             register = myfile.read()
 
@@ -47,7 +49,7 @@ def create():
                 new_id = int(register) + 1
             myfile.close()
 
-            saving_file = open('data/last_id.csv', 'w', newline='')
+            saving_file = open(LAST_ID_FILE, 'w', newline='')
             saving_file.write(str(new_id))
 
             saving_file.close()
@@ -65,8 +67,9 @@ def edit(id):
 
 @app.route("/delete/<int:id>", methods=["GET","POST"])
 def remove(id):
+
     if request.method == "GET":
-        myfile = open('data/movements.csv', 'r')
+        myfile = open(MOVEMENTS_FILE, 'r')
         read = csv.reader(myfile, delimiter=',',quotechar='"')
         searched_register = []
         for register in read:
@@ -79,9 +82,10 @@ def remove(id):
             return render_template("delete.html", pageTitle="Delete", registers = searched_register)
         else:
             return redirect("/")
+
     else: #aquí sería POST
-        old_file = open('data/movements.csv', 'r')
-        file = open('data/movements.csv', 'w')
+        old_file = open(MOVEMENTS_FILE, 'r') #acceder al csv de registros
+        file = open(MOVEMENTS_NEW_FILE, 'w', newline= "") #acceder a un archivo auxiliar
 
         csvReader = csv.reader(old_file, delimiter=',', quotechar='"')
         csvWriter = csv.writer(file, delimiter=',', quotechar='"')
@@ -92,6 +96,9 @@ def remove(id):
 
         old_file.close()
         file.close()
+
+        os.remove(MOVEMENTS_FILE) #función remove que recibe la ruta del archivo a eliminar
+        os.rename(MOVEMENTS_NEW_FILE, MOVEMENTS_FILE) #función para renombrar que recibe los parámetros de archivo a renombrar y nombre nuevo
 
         return redirect("/")
     
