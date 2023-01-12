@@ -12,7 +12,7 @@
         <input type="text" name="concept" placeholder="Introduce a concept" value="{{dataForm.concept}}">
         <br>
         <label for="number">Quantity:</label>
-        <input type="number" name="quantity" placeholder="Introduce a quantity" step="0.01" value="{{dataForm.quantity}}"> <!--step para poder agregar decimales después de la coma-->
+        <input type="number" name="quantity" id="quantity" placeholder="Introduce a quantity" step="0.01" value="{{dataForm.quantity}}"> <!--step para poder agregar decimales después de la coma-->
         <br>
         <button type="submit">{{typeButton}}</button>
 </form>
@@ -22,7 +22,7 @@
 <article>
         <ul>
                 {% for item in msgerror %}
-                <li>{{item}}</li>
+                <li class="error">{{item}}</li>
                 {% endfor %}
         </ul>
 

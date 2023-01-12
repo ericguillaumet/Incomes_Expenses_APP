@@ -3,7 +3,7 @@
 {% block pageBase %}
         <h1>Esto seria la lista de Ingresos y Gastos</h1>
         <p>Accounting simulation</p>
-            <table>
+            <table class="table">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -21,8 +21,8 @@
                         <td>{{item[2]}}</td>
                         <td>{{item[3]}}€</td>
                         <td>
-                            <a href="/delete/{{item[0]}}">Delete</a>
-                            <a href="/update/{{item[0]}}">Modify</a>
+                            <a class= "btn btn-danger" href="/delete/{{item[0]}}">Delete</a>
+                            <a class= "btn btn-info" href="/update/{{item[0]}}">Modify</a>
                         </td>
                     </tr>
                     {% endfor %}
