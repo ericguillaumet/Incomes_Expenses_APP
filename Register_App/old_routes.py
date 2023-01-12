@@ -4,19 +4,24 @@ from datetime import date
 import csv
 from config import *
 import os #módulo para renombrar y eliminar archivos
-from models import delete_by, insert, select_all, select_by, update_by
 
 @app.route("/")
 def index():
+    file = open(MOVEMENTS_FILE, "r") #Llama al archivo
+    csvReader = csv.reader(file, delimiter=",",quotechar='"') #Accede a cada registro del archivo y lo formatea
+    data = [] #Creo una lista de datos vacía para cargar los registros del archivo
 
-    data = select_all()
+    #recorrer el objeto csvReader y cargar cada registro a la lista de datos
+    for item in csvReader:
+        data.append(item)
+    
+    file.close()
 
     return render_template("index.html", pageTitle="Lists", list=data) #Llamamos a la función render template para usar el HTML 
 #El framework solo va a reconocoer el método render_template si index.html se encuentra dentro de la carpeta templates
 
 @app.route("/new", methods=["GET","POST"])
 def create():
-
     if request.method == "GET": #Esto puede ser POST o GET
         return render_template("new.html", pageTitle="Admission", typeAction="Admission", typeButton="Save", dataForm={}) #dataForm vacío porque es un diccionario
     else: #acceder al archivo y configurarlo para cargar un nuevo registro
@@ -30,42 +35,48 @@ def create():
         if error:                                                                                               #Mensaje de error
             return render_template("new.html", pageTitle="Admission", typeAction="Admission", typeButton="Save", msgerror = error, dataForm=request.form) 
         else:
+            myfile = open(MOVEMENTS_FILE, 'a', newline='')
+            read = csv.writer(myfile, delimiter=',', quotechar='"')
+            #crear ID
+            myfile = open(LAST_ID_FILE, 'r')
+
+            register = myfile.read()
+
+            if register == "":
+                new_id = 1
             
-            insert([request.form['date'],
-                    request.form['concept'],
-                    request.form['quantity']])
-            
+            else:
+                new_id = int(register) + 1
+            myfile.close()
+
+            saving_file = open(LAST_ID_FILE, 'w', newline='')
+            saving_file.write(str(new_id))
+
+            saving_file.close()
+            #registramos los datos recibidos desde el formulario con request.form y lo añadimos con el método writerrow
+            read.writerow([new_id, request.form['date'], request.form['concept'],request.form['quantity']])
+
+        myfile.close()
+
     return redirect('/') #Para que nos redirija a la pantalla principal
 
-@app.route("/update/<int:id>", methods=["GET","POST"])
+@app.route("/update/<int:id>")
 def edit(id):
-    if request.method == "GET":
-
-        register = select_by(id)
-
-        return render_template("update.html", pageTitle="Edit", typeAction="Modification", typeButton="Edit", dataForm=register)
-    
-    else:
-
-        error = validateForm(request.form)
-        
-        if error:                                                                                               #Mensaje de error
-            return render_template("update.html", pageTitle="Modification", typeAction="Modification", typeButton="Save", msgerror = error, dataForm=request.form) 
-        else:
-            
-            update_by(id, [request.form['date'],
-                    request.form['concept'],
-                    request.form['quantity']])
-    
-    #return f"This is the ID ={id} of the modify register"
+    #return render_template("update.html", pageTitle="Edit", typeAction="Modification", typeButton="Edit", dataForm={})
+    return f"This is the ID ={id} of the modify register"
 
 @app.route("/delete/<int:id>", methods=["GET","POST"])
 def remove(id):
 
-        #Si no encuentra registros:
     if request.method == "GET":
-        
-        searched_register = select_by(id)
+        myfile = open(MOVEMENTS_FILE, 'r')
+        read = csv.reader(myfile, delimiter=',',quotechar='"')
+        searched_register = []
+        for register in read:
+            if register[0] == str(id):
+                searched_register = register
+        myfile.close()
+        #Si no encuentra registros:
 
         if len(searched_register) > 0:
             return render_template("delete.html", pageTitle="Delete", registers = searched_register)
@@ -73,7 +84,22 @@ def remove(id):
             return redirect("/")
 
     else: #aquí sería POST
-        delete_by(id)
+        old_file = open(MOVEMENTS_FILE, 'r') #acceder al csv de registros
+        file = open(MOVEMENTS_NEW_FILE, 'w', newline= "") #acceder a un archivo auxiliar
+
+        csvReader = csv.reader(old_file, delimiter=',', quotechar='"')
+        csvWriter = csv.writer(file, delimiter=',', quotechar='"')
+
+        for register in csvReader:
+            if register[0] != str(id): #mientras el id sea distinto del proporcionado, para eliminar escribimos encima de "file"
+                csvWriter.writerow(register)
+
+        old_file.close()
+        file.close()
+
+        os.remove(MOVEMENTS_FILE) #función remove que recibe la ruta del archivo a eliminar
+        os.rename(MOVEMENTS_NEW_FILE, MOVEMENTS_FILE) #función para renombrar que recibe los parámetros de archivo a renombrar y nombre nuevo
+
         return redirect("/")
     
 #Crear una función para validar formulario de registro donde controlemos lo siguiente:

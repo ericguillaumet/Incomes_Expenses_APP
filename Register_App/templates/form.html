@@ -4,6 +4,8 @@
 <h1>This is the {{typeAction}} of Incomes and Expenses</h1>
 <p>Accounting simulation</p>
 
+{{dataForm}}
+
 <form action="/new" method="post"> <!--El action es para enviar los datos, en este caso a home-->
         <label for="fecha">Date:</label>
         <input type="date" name="date" value="{{dataForm.date}}" required>
