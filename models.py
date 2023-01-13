@@ -31,10 +31,20 @@ def select_by(id):
             searched_register = register
     
     dictionary = dict()
+    
+    nombres = ["id", "date", "concept", "quantity"]
+
+    for i in range(len(nombres)):
+        dictionary[nombres[i]] = searched_register[i]
+
+    """
+    This is the same as the for:
+
     dictionary["id"] = searched_register[0] #Posición 0 es el id
     dictionary["date"] = searched_register[1]
     dictionary["concept"] = searched_register[2]
     dictionary["quantity"] = searched_register[3]
+    """
 
     myfile.close()
 
