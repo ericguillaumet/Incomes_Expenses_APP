@@ -1,6 +1,6 @@
 # Incomes-Expenses web APP
 
-Software built in Python with the framework Flask, Hello World
+Software for tracking Incomes and Expenses built in Python with the Flask framework and Jinja engine
 
 ## Install
 
@@ -26,23 +26,23 @@ The used libraries: https://flask.palletsprojects.com/en/2.2.x/
 ## Command to execute the server:
 
 ```
-flask --app hello run
+flask --app main run
 ```
 
 # Command to execute the server live:
 
 ```
-flask --app hello --debug run 
+flask --app main --debug run 
 ```
 
 ## Command to run the server in a different port:
 
 ```
-flask --app hello run -p 5001
+flask --app main run -p 5001
 ```
 
 ## Command to run the debug mode in the changed port:
 
 ```
-flask --app hello --debug run -p 5001
+flask --app main --debug run -p 5001
 ```
